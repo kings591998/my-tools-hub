@@ -1,0 +1,35 @@
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+    // بيانات الربط الخاصة بك
+    const SUPABASE_URL = 'https://enazqjunofeyepzcoorl.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_8x_SxN-W8RJBvlEFa2RqQg_O5qPWkIR';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // وظيفة جلب الأدوات وعرضها
+    async function loadTools() {
+        const { data: tools, error } = await supabaseClient
+            .from('tools')
+            .select('*');
+
+        if (error) return console.error(error);
+
+        const grid = document.getElementById('tools-grid');
+        // نبقي على زر الإضافة ونمسح الباقي للتحديث
+        grid.innerHTML = '<div class="card add-btn" onclick="showAddForm()">+</div>';
+
+        tools.forEach(tool => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<h3>${tool.icon} ${tool.title}</h3><p>${tool.category}</p>`;
+            card.onclick = () => alert('جاري تشغيل: ' + tool.title);
+            grid.appendChild(card);
+        });
+    }
+
+    // تشغيل الجلب عند فتح الموقع
+    loadTools();
+
+    function showAddForm() {
+        alert("هنا سنقوم ببرمجة نافذة إضافة الأدوات في الخطوة القادمة!");
+    }
+</script>
